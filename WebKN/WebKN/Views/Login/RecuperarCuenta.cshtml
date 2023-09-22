@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "IniciarSesion";
+    ViewBag.Title = "RecuperarCuenta";
     Layout = "~/Views/Shared/_Layout_Login.cshtml";
 }
 
@@ -19,17 +19,12 @@
                     <div class="form-group">
                         <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Correo Electrónico">
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Contraseña">
-                    </div>
                     <div class="mt-3">
-                        <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">INICIAR SESIÓN</a>
+                        <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">RECUPERAR ACCESO</a>
                     </div>
 
                     <div class="text-center mt-4 font-weight-light">
-                        ¿Olvidaste tu contraseña? <a href="@Url.Action("RecuperarCuenta","Login")" class="text-primary">Recuperar</a>
-                        <br />
-                        ¿No tienes una cuenta? <a href="@Url.Action("RegistrarCuenta","Login")" class="text-primary">Registrarse</a>
+                        ¿Ya tienes una cuenta? <a href="@Url.Action("IniciarSesion","Login")" class="text-primary">Iniciar Sesión</a>
                     </div>
                 </form>
             </div>
