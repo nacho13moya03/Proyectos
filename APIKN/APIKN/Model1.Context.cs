@@ -70,5 +70,14 @@ namespace APIKN
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesionSP_Result>("IniciarSesionSP", correoParameter, contrasennaParameter);
         }
+    
+        public virtual ObjectResult<RecuperarCuentaSP_Result> RecuperarCuentaSP(string identificacion)
+        {
+            var identificacionParameter = identificacion != null ?
+                new ObjectParameter("Identificacion", identificacion) :
+                new ObjectParameter("Identificacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RecuperarCuentaSP_Result>("RecuperarCuentaSP", identificacionParameter);
+        }
     }
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
-using System.Security.Policy;
-using System.Web;
 using WebKN.Entities;
 
 namespace WebKN.Models
@@ -34,9 +29,15 @@ namespace WebKN.Models
             }
         }
 
-        public void RecuperarCuenta(UsuarioEnt entidad)
+        public string RecuperarCuenta(UsuarioEnt entidad)
         {
-
+            using (var client = new HttpClient())
+            {
+                var urlApi = "https://localhost:44347/RecuperarCuenta";
+                var jsonData = JsonContent.Create(entidad);
+                var res = client.PostAsync(urlApi, jsonData).Result;
+                return res.Content.ReadFromJsonAsync<string>().Result;
+            }
         }
 
     }

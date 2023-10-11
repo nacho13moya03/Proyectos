@@ -1,12 +1,19 @@
 ﻿using APIKN.Entities;
 using System;
+using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
 using System.Web.Http;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.WebControls;
+using System.IO;
 
 namespace APIKN.Controllers
 {
     public class LoginController : ApiController
     {
+        Utilitarios util = new Utilitarios();
 
         [HttpPost]
         [Route("RegistrarCuenta")]
@@ -60,5 +67,39 @@ namespace APIKN.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("RecuperarCuenta")]
+        public string RecuperarCuenta(UsuarioEnt entidad)
+        {
+            try
+            {
+                using (var context = new BDKNEntities())
+                {
+                    var datos = context.RecuperarCuentaSP(entidad.Identificacion).FirstOrDefault();
+
+                    if (datos != null)
+                    {
+                        string rutaArchivo = @"C:\Contrasenna.html";
+                        string html = File.ReadAllText(rutaArchivo);
+
+                        html = html.Replace("@@Nombre", datos.Nombre);
+                        html = html.Replace("@@Contrasenna", datos.Contrasenna);
+
+                        util.EnviarCorreo(datos.Correo, "Contraseña de Acceso", html);
+                        return "OK";
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
     }
 }
+ 

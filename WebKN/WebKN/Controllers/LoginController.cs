@@ -73,8 +73,17 @@ namespace WebKN.Controllers
         [HttpPost]
         public ActionResult RecuperarCuenta(UsuarioEnt entidad)
         {
-            modelUsuario.RecuperarCuenta(entidad);
-            return View();
+            string respuesta = modelUsuario.RecuperarCuenta(entidad);
+
+            if (respuesta == "OK")
+            {
+                return RedirectToAction("IniciarSesion", "Login");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha podido recuperar su información";
+                return View();
+            }
         }
 
     }
