@@ -1,4 +1,5 @@
 ﻿using APIKN.Entities;
+using System;
 using System.Linq;
 using System.Web.Http;
 
@@ -11,21 +12,28 @@ namespace APIKN.Controllers
         [Route("RegistrarCuenta")]
         public string RegistrarCuenta(UsuarioEnt entidad)
         {
-            using (var context = new BDKNEntities())
+            try
             {
-                //TUsuario user = new TUsuario();
-                //user.Identificacion = entidad.Identificacion;
-                //user.Nombre = entidad.Nombre;
-                //user.Correo = entidad.Correo;
-                //user.Contrasenna = entidad.Contrasenna;
-                //user.Estado = entidad.Estado;
-                //user.Direccion = entidad.Direccion;
+                using (var context = new BDKNEntities())
+                {
+                    //TUsuario user = new TUsuario();
+                    //user.Identificacion = entidad.Identificacion;
+                    //user.Nombre = entidad.Nombre;
+                    //user.Correo = entidad.Correo;
+                    //user.Contrasenna = entidad.Contrasenna;
+                    //user.Estado = entidad.Estado;
+                    //user.Direccion = entidad.Direccion;
 
-                //context.TUsuario.Add(user);
-                //context.SaveChanges();
+                    //context.TUsuario.Add(user);
+                    //context.SaveChanges();
 
-                context.RegistrarCuentaSP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.Contrasenna, entidad.Estado, entidad.Direccion);
-                return "Registro realizado correctamente";
+                    context.RegistrarCuentaSP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.Contrasenna, entidad.Estado, entidad.Direccion);
+                    return "OK";
+                }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
             }
         }
 
@@ -33,15 +41,22 @@ namespace APIKN.Controllers
         [Route("IniciarSesion")]
         public IniciarSesionSP_Result IniciarSesion(UsuarioEnt entidad)
         {
-            using (var context = new BDKNEntities())
+            try
             {
-                //return (from x in context.TUsuario 
-                //             where x.Correo == entidad.Correo
-                //             && x.Contrasenna == entidad.Contrasenna
-                //             && x.Estado == true
-                //             select x).FirstOrDefault();
+                using (var context = new BDKNEntities())
+                {
+                    //return (from x in context.TUsuario 
+                    //             where x.Correo == entidad.Correo
+                    //             && x.Contrasenna == entidad.Contrasenna
+                    //             && x.Estado == true
+                    //             select x).FirstOrDefault();
 
-                return context.IniciarSesionSP(entidad.Correo, entidad.Contrasenna).FirstOrDefault();
+                    return context.IniciarSesionSP(entidad.Correo, entidad.Contrasenna).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 

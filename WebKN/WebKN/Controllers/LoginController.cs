@@ -6,7 +6,7 @@ namespace WebKN.Controllers
 {
     public class LoginController : Controller
     {
-        UsuarioModel claseUsuario = new UsuarioModel();
+        UsuarioModel modelUsuario = new UsuarioModel();
 
         [HttpGet]
         public ActionResult Index()
@@ -24,8 +24,17 @@ namespace WebKN.Controllers
         [HttpPost]
         public ActionResult IniciarSesion(UsuarioEnt entidad)
         {
-            claseUsuario.IniciarSesion(entidad);
-            return View();
+            var respuesta = modelUsuario.IniciarSesion(entidad);
+
+            if (respuesta != null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha podido validar su información";
+                return View();
+            }
         }
 
 
@@ -38,8 +47,20 @@ namespace WebKN.Controllers
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioEnt entidad)
         {
-            claseUsuario.RegistrarCuenta(entidad);
-            return View();
+            entidad.Estado = true;
+            entidad.Direccion = string.Empty;
+            
+            string respuesta = modelUsuario.RegistrarCuenta(entidad);
+
+            if (respuesta == "OK")
+            {
+                return RedirectToAction("IniciarSesion", "Login");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha podido registrar su información";
+                return View();
+            }            
         }
 
 
@@ -52,7 +73,7 @@ namespace WebKN.Controllers
         [HttpPost]
         public ActionResult RecuperarCuenta(UsuarioEnt entidad)
         {
-            claseUsuario.RecuperarCuenta(entidad);
+            modelUsuario.RecuperarCuenta(entidad);
             return View();
         }
 
