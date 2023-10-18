@@ -12,18 +12,18 @@ namespace APIKN
     using System;
     using System.Collections.Generic;
     
-    public partial class TUsuario
+    public partial class TProvincia
     {
-        public long ConUsuario { get; set; }
-        public string Identificacion { get; set; }
-        public string Nombre { get; set; }
-        public string Correo { get; set; }
-        public string Contrasenna { get; set; }
-        public bool Estado { get; set; }
-        public long ConProvincia { get; set; }
-        public long ConRol { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TProvincia()
+        {
+            this.TUsuario = new HashSet<TUsuario>();
+        }
     
-        public virtual TProvincia TProvincia { get; set; }
-        public virtual TRol TRol { get; set; }
+        public long ConProvincia { get; set; }
+        public string Descripcion { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TUsuario> TUsuario { get; set; }
     }
 }

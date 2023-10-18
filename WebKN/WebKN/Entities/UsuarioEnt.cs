@@ -8,6 +8,7 @@
         public string Correo { get; set; }
         public string Contrasenna { get; set; }
         public bool Estado { get; set; }
-        public string Direccion { get; set; }
+        public string DescripcionProvincia { get; set; }
+        public string DescripcionRol { get; set; }
     }
 }

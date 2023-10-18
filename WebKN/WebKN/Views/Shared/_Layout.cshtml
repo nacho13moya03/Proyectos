@@ -57,7 +57,7 @@
 
                             @if (Session["NombreUsuario"] != null)
                             {
-                                <a class="dropdown-item">
+                                <a class="dropdown-item" href="@Url.Action("PerfilUsuario","Usuario")">
                                     <i class="ti-settings text-primary"></i>
                                     Perfil
                                 </a>

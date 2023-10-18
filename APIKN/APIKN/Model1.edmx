@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="BDKNModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TProvincia">
+          <Key>
+            <PropertyRef Name="ConProvincia" />
+          </Key>
+          <Property Name="ConProvincia" Type="bigint" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="TRol">
           <Key>
             <PropertyRef Name="ConRol" />
@@ -22,9 +29,21 @@
           <Property Name="Correo" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Contrasenna" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
-          <Property Name="Direccion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ConProvincia" Type="bigint" Nullable="false" />
           <Property Name="ConRol" Type="bigint" Nullable="false" />
         </EntityType>
+        <Association Name="FK_TUsuario_TProvincia">
+          <End Role="TProvincia" Type="Self.TProvincia" Multiplicity="1" />
+          <End Role="TUsuario" Type="Self.TUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TProvincia">
+              <PropertyRef Name="ConProvincia" />
+            </Principal>
+            <Dependent Role="TUsuario">
+              <PropertyRef Name="ConProvincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TUsuario_TRol">
           <End Role="TRol" Type="Self.TRol" Multiplicity="1" />
           <End Role="TUsuario" Type="Self.TUsuario" Multiplicity="*" />
@@ -49,12 +68,15 @@
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="Correo" Type="varchar" Mode="In" />
           <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
-          <Parameter Name="Estado" Type="bit" Mode="In" />
-          <Parameter Name="Direccion" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="BDKNModelStoreContainer">
+          <EntitySet Name="TProvincia" EntityType="Self.TProvincia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRol" EntityType="Self.TRol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TUsuario" EntityType="Self.TUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TUsuario_TProvincia" Association="Self.FK_TUsuario_TProvincia">
+            <End Role="TProvincia" EntitySet="TProvincia" />
+            <End Role="TUsuario" EntitySet="TUsuario" />
+          </AssociationSet>
           <AssociationSet Name="FK_TUsuario_TRol" Association="Self.FK_TUsuario_TRol">
             <End Role="TRol" EntitySet="TRol" />
             <End Role="TUsuario" EntitySet="TUsuario" />
@@ -65,6 +87,14 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BDKNModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TProvincia">
+          <Key>
+            <PropertyRef Name="ConProvincia" />
+          </Key>
+          <Property Name="ConProvincia" Type="Int64" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TUsuario" Relationship="Self.FK_TUsuario_TProvincia" FromRole="TProvincia" ToRole="TUsuario" />
+        </EntityType>
         <EntityType Name="TRol">
           <Key>
             <PropertyRef Name="ConRol" />
@@ -83,10 +113,23 @@
           <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Contrasenna" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
-          <Property Name="Direccion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConProvincia" Type="Int64" Nullable="false" />
           <Property Name="ConRol" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="TProvincia" Relationship="Self.FK_TUsuario_TProvincia" FromRole="TUsuario" ToRole="TProvincia" />
           <NavigationProperty Name="TRol" Relationship="Self.FK_TUsuario_TRol" FromRole="TUsuario" ToRole="TRol" />
         </EntityType>
+        <Association Name="FK_TUsuario_TProvincia">
+          <End Role="TProvincia" Type="Self.TProvincia" Multiplicity="1" />
+          <End Role="TUsuario" Type="Self.TUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TProvincia">
+              <PropertyRef Name="ConProvincia" />
+            </Principal>
+            <Dependent Role="TUsuario">
+              <PropertyRef Name="ConProvincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TUsuario_TRol">
           <End Role="TRol" Type="Self.TRol" Multiplicity="1" />
           <End Role="TUsuario" Type="Self.TUsuario" Multiplicity="*" />
@@ -100,8 +143,13 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BDKNEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TProvincia" EntityType="Self.TProvincia" />
           <EntitySet Name="TRol" EntityType="Self.TRol" />
           <EntitySet Name="TUsuario" EntityType="Self.TUsuario" />
+          <AssociationSet Name="FK_TUsuario_TProvincia" Association="Self.FK_TUsuario_TProvincia">
+            <End Role="TProvincia" EntitySet="TProvincia" />
+            <End Role="TUsuario" EntitySet="TUsuario" />
+          </AssociationSet>
           <AssociationSet Name="FK_TUsuario_TRol" Association="Self.FK_TUsuario_TRol">
             <End Role="TRol" EntitySet="TRol" />
             <End Role="TUsuario" EntitySet="TUsuario" />
@@ -118,8 +166,6 @@
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Correo" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
-            <Parameter Name="Estado" Mode="In" Type="Boolean" />
-            <Parameter Name="Direccion" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="IniciarSesionSP_Result">
@@ -129,7 +175,7 @@
           <Property Type="String" Name="Correo" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Contrasenna" Nullable="false" MaxLength="25" />
           <Property Type="Boolean" Name="Estado" Nullable="false" />
-          <Property Type="String" Name="Direccion" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="DescripcionProvincia" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="DescripcionRol" Nullable="false" MaxLength="30" />
         </ComplexType>
         <ComplexType Name="RecuperarCuentaSP_Result">
@@ -143,6 +189,14 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BDKNModelStoreContainer" CdmEntityContainer="BDKNEntities">
+          <EntitySetMapping Name="TProvincia">
+            <EntityTypeMapping TypeName="BDKNModel.TProvincia">
+              <MappingFragment StoreEntitySet="TProvincia">
+                <ScalarProperty Name="ConProvincia" ColumnName="ConProvincia" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TRol">
             <EntityTypeMapping TypeName="BDKNModel.TRol">
               <MappingFragment StoreEntitySet="TRol">
@@ -160,7 +214,7 @@
                 <ScalarProperty Name="Correo" ColumnName="Correo" />
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="ConProvincia" ColumnName="ConProvincia" />
                 <ScalarProperty Name="ConRol" ColumnName="ConRol" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -174,7 +228,7 @@
                 <ScalarProperty Name="Correo" ColumnName="Correo" />
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="DescripcionProvincia" ColumnName="DescripcionProvincia" />
                 <ScalarProperty Name="DescripcionRol" ColumnName="DescripcionRol" />
               </ComplexTypeMapping>
             </ResultMapping>

@@ -27,6 +27,7 @@ namespace APIKN
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<TProvincia> TProvincia { get; set; }
         public virtual DbSet<TRol> TRol { get; set; }
         public virtual DbSet<TUsuario> TUsuario { get; set; }
     
@@ -52,7 +53,7 @@ namespace APIKN
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RecuperarCuentaSP_Result>("RecuperarCuentaSP", identificacionParameter);
         }
     
-        public virtual int RegistrarCuentaSP(string identificacion, string nombre, string correo, string contrasenna, Nullable<bool> estado, string direccion)
+        public virtual int RegistrarCuentaSP(string identificacion, string nombre, string correo, string contrasenna)
         {
             var identificacionParameter = identificacion != null ?
                 new ObjectParameter("Identificacion", identificacion) :
@@ -70,15 +71,7 @@ namespace APIKN
                 new ObjectParameter("Contrasenna", contrasenna) :
                 new ObjectParameter("Contrasenna", typeof(string));
     
-            var estadoParameter = estado.HasValue ?
-                new ObjectParameter("Estado", estado) :
-                new ObjectParameter("Estado", typeof(bool));
-    
-            var direccionParameter = direccion != null ?
-                new ObjectParameter("Direccion", direccion) :
-                new ObjectParameter("Direccion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuentaSP", identificacionParameter, nombreParameter, correoParameter, contrasennaParameter, estadoParameter, direccionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuentaSP", identificacionParameter, nombreParameter, correoParameter, contrasennaParameter);
         }
     }
 }

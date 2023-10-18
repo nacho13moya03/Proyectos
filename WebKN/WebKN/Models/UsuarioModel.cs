@@ -1,7 +1,9 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.EnterpriseServices.Internal;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Web.Mvc;
 using WebKN.Entities;
 
 namespace WebKN.Models
@@ -46,6 +48,16 @@ namespace WebKN.Models
                 var urlApi = rutaServidor + "RecuperarCuenta?Identificacion=" + entidad.Identificacion;
                 var res = client.GetAsync(urlApi).Result;
                 return res.Content.ReadFromJsonAsync<string>().Result;
+            }
+        }
+
+        public List<SelectListItem> ConsultarProvincias()
+        {
+            using (var client = new HttpClient())
+            {
+                var urlApi = rutaServidor + "ConsultarProvincias";
+                var res = client.GetAsync(urlApi).Result;
+                return res.Content.ReadFromJsonAsync<List<SelectListItem>>().Result;
             }
         }
 

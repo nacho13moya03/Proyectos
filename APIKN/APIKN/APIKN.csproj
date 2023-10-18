@@ -191,6 +191,9 @@
     <Compile Include="RecuperarCuentaSP_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="TProvincia.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="TRol.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

@@ -54,10 +54,7 @@ namespace WebKN.Controllers
 
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioEnt entidad)
-        {
-            entidad.Estado = true;
-            entidad.Direccion = string.Empty;
-            
+        {           
             string respuesta = modelUsuario.RegistrarCuenta(entidad);
 
             if (respuesta == "OK")

@@ -1,13 +1,9 @@
 ﻿using APIKN.Entities;
 using System;
-using System.Drawing;
 using System.Linq;
-using System.Net.Mail;
-using System.Text;
 using System.Web.Http;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.WebControls;
 using System.IO;
+using System.Collections.Generic;
 
 namespace APIKN.Controllers
 {
@@ -34,7 +30,7 @@ namespace APIKN.Controllers
                     //context.TUsuario.Add(user);
                     //context.SaveChanges();
 
-                    context.RegistrarCuentaSP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.Contrasenna, entidad.Estado, entidad.Direccion);
+                    context.RegistrarCuentaSP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.Contrasenna);
                     return "OK";
                 }
             }
@@ -97,6 +93,32 @@ namespace APIKN.Controllers
             catch (Exception)
             {
                 return string.Empty;
+            }
+        }
+
+        [HttpGet]
+        [Route("ConsultarProvincias")]
+        public List<System.Web.Mvc.SelectListItem> ConsultarProvincias()
+        {
+            try
+            {
+                using (var context = new BDKNEntities())
+                {
+                    var datos = (from x in context.TProvincia
+                                 select x).ToList();
+
+                    List<System.Web.Mvc.SelectListItem> direcciones = new List<System.Web.Mvc.SelectListItem>();
+                    foreach (var item in datos)
+                    {
+                        direcciones.Add(new System.Web.Mvc.SelectListItem { Value = item.ConProvincia.ToString(), Text = item.Descripcion });
+                    }
+
+                    return direcciones;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
