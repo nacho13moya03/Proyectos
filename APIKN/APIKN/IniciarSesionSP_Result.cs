@@ -20,5 +20,6 @@ namespace APIKN
         public string Contrasenna { get; set; }
         public bool Estado { get; set; }
         public string Direccion { get; set; }
+        public string DescripcionRol { get; set; }
     }
 }

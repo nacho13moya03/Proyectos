@@ -27,7 +27,30 @@ namespace APIKN
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<TRol> TRol { get; set; }
         public virtual DbSet<TUsuario> TUsuario { get; set; }
+    
+        public virtual ObjectResult<IniciarSesionSP_Result> IniciarSesionSP(string correo, string contrasenna)
+        {
+            var correoParameter = correo != null ?
+                new ObjectParameter("Correo", correo) :
+                new ObjectParameter("Correo", typeof(string));
+    
+            var contrasennaParameter = contrasenna != null ?
+                new ObjectParameter("Contrasenna", contrasenna) :
+                new ObjectParameter("Contrasenna", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesionSP_Result>("IniciarSesionSP", correoParameter, contrasennaParameter);
+        }
+    
+        public virtual ObjectResult<RecuperarCuentaSP_Result> RecuperarCuentaSP(string identificacion)
+        {
+            var identificacionParameter = identificacion != null ?
+                new ObjectParameter("Identificacion", identificacion) :
+                new ObjectParameter("Identificacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RecuperarCuentaSP_Result>("RecuperarCuentaSP", identificacionParameter);
+        }
     
         public virtual int RegistrarCuentaSP(string identificacion, string nombre, string correo, string contrasenna, Nullable<bool> estado, string direccion)
         {
@@ -56,28 +79,6 @@ namespace APIKN
                 new ObjectParameter("Direccion", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuentaSP", identificacionParameter, nombreParameter, correoParameter, contrasennaParameter, estadoParameter, direccionParameter);
-        }
-    
-        public virtual ObjectResult<IniciarSesionSP_Result> IniciarSesionSP(string correo, string contrasenna)
-        {
-            var correoParameter = correo != null ?
-                new ObjectParameter("Correo", correo) :
-                new ObjectParameter("Correo", typeof(string));
-    
-            var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("Contrasenna", contrasenna) :
-                new ObjectParameter("Contrasenna", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<IniciarSesionSP_Result>("IniciarSesionSP", correoParameter, contrasennaParameter);
-        }
-    
-        public virtual ObjectResult<RecuperarCuentaSP_Result> RecuperarCuentaSP(string identificacion)
-        {
-            var identificacionParameter = identificacion != null ?
-                new ObjectParameter("Identificacion", identificacion) :
-                new ObjectParameter("Identificacion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RecuperarCuentaSP_Result>("RecuperarCuentaSP", identificacionParameter);
         }
     }
 }

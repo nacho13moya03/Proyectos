@@ -14,6 +14,13 @@ namespace WebKN.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult CerrarSesion()
+        { 
+            Session.Clear();
+            return RedirectToAction("IniciarSesion", "Login");
+        }
+
 
         [HttpGet]
         public ActionResult IniciarSesion()
@@ -28,6 +35,7 @@ namespace WebKN.Controllers
 
             if (respuesta != null)
             {
+                Session["NombreUsuario"] = respuesta.Nombre;
                 return RedirectToAction("Index", "Login");
             }
             else

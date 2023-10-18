@@ -67,19 +67,19 @@ namespace APIKN.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("RecuperarCuenta")]
-        public string RecuperarCuenta(UsuarioEnt entidad)
+        public string RecuperarCuenta(string Identificacion)
         {
             try
             {
                 using (var context = new BDKNEntities())
                 {
-                    var datos = context.RecuperarCuentaSP(entidad.Identificacion).FirstOrDefault();
+                    var datos = context.RecuperarCuentaSP(Identificacion).FirstOrDefault();
 
                     if (datos != null)
                     {
-                        string rutaArchivo = @"C:\Contrasenna.html";
+                        string rutaArchivo = AppDomain.CurrentDomain.BaseDirectory + "Templates\\Contrasenna.html";
                         string html = File.ReadAllText(rutaArchivo);
 
                         html = html.Replace("@@Nombre", datos.Nombre);

@@ -4,7 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BDKNModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="BDKNModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TRol">
+          <Key>
+            <PropertyRef Name="ConRol" />
+          </Key>
+          <Property Name="ConRol" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
         <EntityType Name="TUsuario">
           <Key>
             <PropertyRef Name="ConUsuario" />
@@ -16,7 +23,20 @@
           <Property Name="Contrasenna" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="Direccion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ConRol" Type="bigint" Nullable="false" />
         </EntityType>
+        <Association Name="FK_TUsuario_TRol">
+          <End Role="TRol" Type="Self.TRol" Multiplicity="1" />
+          <End Role="TUsuario" Type="Self.TUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRol">
+              <PropertyRef Name="ConRol" />
+            </Principal>
+            <Dependent Role="TUsuario">
+              <PropertyRef Name="ConRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="IniciarSesionSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Correo" Type="varchar" Mode="In" />
           <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
@@ -33,12 +53,26 @@
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="BDKNModelStoreContainer">
+          <EntitySet Name="TRol" EntityType="Self.TRol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TUsuario" EntityType="Self.TUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TUsuario_TRol" Association="Self.FK_TUsuario_TRol">
+            <End Role="TRol" EntitySet="TRol" />
+            <End Role="TUsuario" EntitySet="TUsuario" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BDKNModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TRol">
+          <Key>
+            <PropertyRef Name="ConRol" />
+          </Key>
+          <Property Name="ConRol" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TUsuario" Relationship="Self.FK_TUsuario_TRol" FromRole="TRol" ToRole="TUsuario" />
+        </EntityType>
         <EntityType Name="TUsuario">
           <Key>
             <PropertyRef Name="ConUsuario" />
@@ -49,10 +83,36 @@
           <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Contrasenna" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
-          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConRol" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="TRol" Relationship="Self.FK_TUsuario_TRol" FromRole="TUsuario" ToRole="TRol" />
         </EntityType>
+        <Association Name="FK_TUsuario_TRol">
+          <End Role="TRol" Type="Self.TRol" Multiplicity="1" />
+          <End Role="TUsuario" Type="Self.TUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRol">
+              <PropertyRef Name="ConRol" />
+            </Principal>
+            <Dependent Role="TUsuario">
+              <PropertyRef Name="ConRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BDKNEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TRol" EntityType="Self.TRol" />
           <EntitySet Name="TUsuario" EntityType="Self.TUsuario" />
+          <AssociationSet Name="FK_TUsuario_TRol" Association="Self.FK_TUsuario_TRol">
+            <End Role="TRol" EntitySet="TRol" />
+            <End Role="TUsuario" EntitySet="TUsuario" />
+          </AssociationSet>
+          <FunctionImport Name="IniciarSesionSP" ReturnType="Collection(BDKNModel.IniciarSesionSP_Result)">
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="RecuperarCuentaSP" ReturnType="Collection(BDKNModel.RecuperarCuentaSP_Result)">
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="RegistrarCuentaSP">
             <Parameter Name="Identificacion" Mode="In" Type="String" />
             <Parameter Name="Nombre" Mode="In" Type="String" />
@@ -60,13 +120,6 @@
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
             <Parameter Name="Estado" Mode="In" Type="Boolean" />
             <Parameter Name="Direccion" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="IniciarSesionSP" ReturnType="Collection(BDKNModel.IniciarSesionSP_Result)">
-            <Parameter Name="Correo" Mode="In" Type="String" />
-            <Parameter Name="Contrasenna" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="RecuperarCuentaSP" ReturnType="Collection(BDKNModel.RecuperarCuentaSP_Result)">
-            <Parameter Name="Identificacion" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="IniciarSesionSP_Result">
@@ -77,6 +130,7 @@
           <Property Type="String" Name="Contrasenna" Nullable="false" MaxLength="25" />
           <Property Type="Boolean" Name="Estado" Nullable="false" />
           <Property Type="String" Name="Direccion" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="DescripcionRol" Nullable="false" MaxLength="30" />
         </ComplexType>
         <ComplexType Name="RecuperarCuentaSP_Result">
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="250" />
@@ -89,20 +143,28 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BDKNModelStoreContainer" CdmEntityContainer="BDKNEntities">
+          <EntitySetMapping Name="TRol">
+            <EntityTypeMapping TypeName="BDKNModel.TRol">
+              <MappingFragment StoreEntitySet="TRol">
+                <ScalarProperty Name="ConRol" ColumnName="ConRol" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TUsuario">
             <EntityTypeMapping TypeName="BDKNModel.TUsuario">
               <MappingFragment StoreEntitySet="TUsuario">
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
                 <ScalarProperty Name="ConUsuario" ColumnName="ConUsuario" />
                 <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Correo" ColumnName="Correo" />
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="ConRol" ColumnName="ConRol" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="RegistrarCuentaSP" FunctionName="BDKNModel.Store.RegistrarCuentaSP" />
           <FunctionImportMapping FunctionImportName="IniciarSesionSP" FunctionName="BDKNModel.Store.IniciarSesionSP">
             <ResultMapping>
               <ComplexTypeMapping TypeName="BDKNModel.IniciarSesionSP_Result">
@@ -113,6 +175,7 @@
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="DescripcionRol" ColumnName="DescripcionRol" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -125,6 +188,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RegistrarCuentaSP" FunctionName="BDKNModel.Store.RegistrarCuentaSP" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
