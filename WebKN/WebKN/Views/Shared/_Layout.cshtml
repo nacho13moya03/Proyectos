@@ -93,18 +93,16 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i class="icon-layout menu-icon"></i>
-                            <span class="menu-title">UI Elements</span>
+                            <span class="menu-title">Mantenimientos</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
 
                                 <li class="nav-item">
-                                    @Html.ActionLink("About", "About", "Login", new { @class = "nav-link" })
+                                    <a href="@Url.Action("ConsultaUsuarios","Usuario")" class=" nav-link">Usuarios</a>
                                 </li>
-                                <li class="nav-item">
-                                    @Html.ActionLink("Contact", "Contact", "Login", new { @class = "nav-link" })
-                                </li>
+
 
                             </ul>
                         </div>

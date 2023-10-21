@@ -1736,6 +1736,7 @@
     <Content Include="Views\Login\RegistrarCuenta.cshtml" />
     <Content Include="Views\Login\RecuperarCuenta.cshtml" />
     <Content Include="Views\Usuario\PerfilUsuario.cshtml" />
+    <Content Include="Views\Usuario\ConsultaUsuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

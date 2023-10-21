@@ -61,5 +61,15 @@ namespace WebKN.Models
             }
         }
 
+        public List<UsuarioEnt> ConsultaUsuarios()
+        {
+            using (var client = new HttpClient())
+            {
+                var urlApi = rutaServidor + "ConsultaUsuarios";
+                var res = client.GetAsync(urlApi).Result;
+                return res.Content.ReadFromJsonAsync<List<UsuarioEnt>>().Result;
+            }
+        }
+
     }
 }

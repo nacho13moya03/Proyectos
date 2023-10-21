@@ -96,32 +96,6 @@ namespace APIKN.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("ConsultarProvincias")]
-        public List<System.Web.Mvc.SelectListItem> ConsultarProvincias()
-        {
-            try
-            {
-                using (var context = new BDKNEntities())
-                {
-                    var datos = (from x in context.TProvincia
-                                 select x).ToList();
-
-                    List<System.Web.Mvc.SelectListItem> direcciones = new List<System.Web.Mvc.SelectListItem>();
-                    foreach (var item in datos)
-                    {
-                        direcciones.Add(new System.Web.Mvc.SelectListItem { Value = item.ConProvincia.ToString(), Text = item.Descripcion });
-                    }
-
-                    return direcciones;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
     }
 }
  
