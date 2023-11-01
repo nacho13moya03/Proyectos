@@ -73,5 +73,30 @@ namespace APIKN
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuentaSP", identificacionParameter, nombreParameter, correoParameter, contrasennaParameter);
         }
+    
+        public virtual int ActualizarCuentaSP(string identificacion, string nombre, string correo, Nullable<long> conProvincia, Nullable<long> conUsuario)
+        {
+            var identificacionParameter = identificacion != null ?
+                new ObjectParameter("Identificacion", identificacion) :
+                new ObjectParameter("Identificacion", typeof(string));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var correoParameter = correo != null ?
+                new ObjectParameter("Correo", correo) :
+                new ObjectParameter("Correo", typeof(string));
+    
+            var conProvinciaParameter = conProvincia.HasValue ?
+                new ObjectParameter("ConProvincia", conProvincia) :
+                new ObjectParameter("ConProvincia", typeof(long));
+    
+            var conUsuarioParameter = conUsuario.HasValue ?
+                new ObjectParameter("ConUsuario", conUsuario) :
+                new ObjectParameter("ConUsuario", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ActualizarCuentaSP", identificacionParameter, nombreParameter, correoParameter, conProvinciaParameter, conUsuarioParameter);
+        }
     }
 }

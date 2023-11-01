@@ -3,6 +3,7 @@ using System.Configuration;
 using System.EnterpriseServices.Internal;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Web;
 using System.Web.Mvc;
 using WebKN.Entities;
 
@@ -68,6 +69,27 @@ namespace WebKN.Models
                 var urlApi = rutaServidor + "ConsultaUsuarios";
                 var res = client.GetAsync(urlApi).Result;
                 return res.Content.ReadFromJsonAsync<List<UsuarioEnt>>().Result;
+            }
+        }
+
+        public UsuarioEnt ConsultaUsuario()
+        {
+            using (var client = new HttpClient())
+            {
+                var urlApi = rutaServidor + "ConsultaUsuario?q=" + HttpContext.Current.Session["IdUsuario"];
+                var res = client.GetAsync(urlApi).Result;
+                return res.Content.ReadFromJsonAsync<UsuarioEnt>().Result;
+            }
+        }
+
+        public string ActualizarCuenta(UsuarioEnt entidad)
+        {
+            using (var client = new HttpClient())
+            {
+                var urlApi = rutaServidor + "ActualizarCuenta";
+                var jsonData = JsonContent.Create(entidad);
+                var res = client.PutAsync(urlApi, jsonData).Result;
+                return res.Content.ReadFromJsonAsync<string>().Result;
             }
         }
 

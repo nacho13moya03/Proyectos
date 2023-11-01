@@ -35,6 +35,7 @@ namespace WebKN.Controllers
 
             if (respuesta != null)
             {
+                Session["IdUsuario"] = respuesta.ConUsuario;
                 Session["NombreUsuario"] = respuesta.Nombre;
                 return RedirectToAction("Index", "Login");
             }

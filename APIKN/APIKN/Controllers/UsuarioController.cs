@@ -20,10 +20,28 @@ namespace APIKN.Controllers
                 using (var context = new BDKNEntities())
                 {
                     context.Configuration.LazyLoadingEnabled = false;
-                    var datos = (from x in context.TUsuario
+                    return (from x in context.TUsuario
                             select x).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<TUsuario>();
+            }
+        }
 
-                    return datos;
+        [HttpGet]
+        [Route("ConsultaUsuario")]
+        public TUsuario ConsultaUsuario(long q)
+        {
+            try
+            {
+                using (var context = new BDKNEntities())
+                {
+                    context.Configuration.LazyLoadingEnabled = false;
+                    return (from x in context.TUsuario
+                            where x.ConUsuario == q
+                            select x).FirstOrDefault();
                 }
             }
             catch (Exception)
@@ -46,7 +64,11 @@ namespace APIKN.Controllers
                     List<System.Web.Mvc.SelectListItem> direcciones = new List<System.Web.Mvc.SelectListItem>();
                     foreach (var item in datos)
                     {
-                        direcciones.Add(new System.Web.Mvc.SelectListItem { Value = item.ConProvincia.ToString(), Text = item.Descripcion });
+                        direcciones.Add(new System.Web.Mvc.SelectListItem
+                        {
+                            Value = item.ConProvincia.ToString(),
+                            Text = item.Descripcion
+                        });
                     }
 
                     return direcciones;
@@ -54,9 +76,28 @@ namespace APIKN.Controllers
             }
             catch (Exception)
             {
-                return null;
+                return new List<System.Web.Mvc.SelectListItem>();
             }
         }
+
+        [HttpPut]
+        [Route("ActualizarCuenta")]
+        public string ActualizarCuenta(UsuarioEnt entidad)
+        {
+            try
+            {
+                using (var context = new BDKNEntities())
+                {
+                    context.ActualizarCuentaSP(entidad.Identificacion, entidad.Nombre, entidad.Correo, entidad.ConProvincia, entidad.ConUsuario);
+                    return "OK";
+                }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
 
     }
 }
