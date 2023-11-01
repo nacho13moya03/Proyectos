@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CasoEstudioKNModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Movimientos">
+          <Key>
+            <PropertyRef Name="Consecutivo" />
+          </Key>
+          <Property Name="Consecutivo" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Monto" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="TipoMovimiento" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TiposMovimientos">
+          <Key>
+            <PropertyRef Name="TipoMovimiento" />
+          </Key>
+          <Property Name="TipoMovimiento" Type="int" Nullable="false" />
+          <Property Name="DescripcionTipoMovimiento" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Movimientos_TiposMovimientos">
+          <End Role="TiposMovimientos" Type="Self.TiposMovimientos" Multiplicity="1" />
+          <End Role="Movimientos" Type="Self.Movimientos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TiposMovimientos">
+              <PropertyRef Name="TipoMovimiento" />
+            </Principal>
+            <Dependent Role="Movimientos">
+              <PropertyRef Name="TipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ConsultarMovimientos_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="RegistrarMovimientos_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
+          <Parameter Name="Monto" Type="decimal" Mode="In" />
+          <Parameter Name="TipoMovimiento" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="CasoEstudioKNModelStoreContainer">
+          <EntitySet Name="Movimientos" EntityType="Self.Movimientos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TiposMovimientos" EntityType="Self.TiposMovimientos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Movimientos_TiposMovimientos" Association="Self.FK_Movimientos_TiposMovimientos">
+            <End Role="TiposMovimientos" EntitySet="TiposMovimientos" />
+            <End Role="Movimientos" EntitySet="Movimientos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CasoEstudioKNModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Movimientos">
+          <Key>
+            <PropertyRef Name="Consecutivo" />
+          </Key>
+          <Property Name="Consecutivo" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Monto" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="TipoMovimiento" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TiposMovimientos" Relationship="Self.FK_Movimientos_TiposMovimientos" FromRole="Movimientos" ToRole="TiposMovimientos" />
+        </EntityType>
+        <EntityType Name="TiposMovimientos">
+          <Key>
+            <PropertyRef Name="TipoMovimiento" />
+          </Key>
+          <Property Name="TipoMovimiento" Type="Int32" Nullable="false" />
+          <Property Name="DescripcionTipoMovimiento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Movimientos" Relationship="Self.FK_Movimientos_TiposMovimientos" FromRole="TiposMovimientos" ToRole="Movimientos" />
+        </EntityType>
+        <Association Name="FK_Movimientos_TiposMovimientos">
+          <End Role="TiposMovimientos" Type="Self.TiposMovimientos" Multiplicity="1" />
+          <End Role="Movimientos" Type="Self.Movimientos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TiposMovimientos">
+              <PropertyRef Name="TipoMovimiento" />
+            </Principal>
+            <Dependent Role="Movimientos">
+              <PropertyRef Name="TipoMovimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CasoEstudioKNEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Movimientos" EntityType="Self.Movimientos" />
+          <EntitySet Name="TiposMovimientos" EntityType="Self.TiposMovimientos" />
+          <AssociationSet Name="FK_Movimientos_TiposMovimientos" Association="Self.FK_Movimientos_TiposMovimientos">
+            <End Role="TiposMovimientos" EntitySet="TiposMovimientos" />
+            <End Role="Movimientos" EntitySet="Movimientos" />
+          </AssociationSet>
+          <FunctionImport Name="ConsultarMovimientos_SP" ReturnType="Collection(CasoEstudioKNModel.ConsultarMovimientos_SP_Result)" />
+          <FunctionImport Name="RegistrarMovimientos_SP">
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="Monto" Mode="In" Type="Decimal" />
+            <Parameter Name="TipoMovimiento" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="ConsultarMovimientos_SP_Result">
+          <Property Type="DateTime" Name="Fecha" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Monto" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="String" Name="DescripcionTipoMovimiento" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Descripcion" Nullable="false" MaxLength="255" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CasoEstudioKNModelStoreContainer" CdmEntityContainer="CasoEstudioKNEntities">
+          <EntitySetMapping Name="Movimientos">
+            <EntityTypeMapping TypeName="CasoEstudioKNModel.Movimientos">
+              <MappingFragment StoreEntitySet="Movimientos">
+                <ScalarProperty Name="Consecutivo" ColumnName="Consecutivo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TiposMovimientos">
+            <EntityTypeMapping TypeName="CasoEstudioKNModel.TiposMovimientos">
+              <MappingFragment StoreEntitySet="TiposMovimientos">
+                <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
+                <ScalarProperty Name="DescripcionTipoMovimiento" ColumnName="DescripcionTipoMovimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ConsultarMovimientos_SP" FunctionName="CasoEstudioKNModel.Store.ConsultarMovimientos_SP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CasoEstudioKNModel.ConsultarMovimientos_SP_Result">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="DescripcionTipoMovimiento" ColumnName="DescripcionTipoMovimiento" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RegistrarMovimientos_SP" FunctionName="CasoEstudioKNModel.Store.RegistrarMovimientos_SP" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

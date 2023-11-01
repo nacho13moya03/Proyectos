@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebCaso1.Entidades.MovimientosENT>
+
+@{
+    ViewBag.Title = "ConsultarMovimientos";
+}
+
+<h2>ConsultarMovimientos</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Monto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoMovimiento)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Monto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescripcionTipoMovimiento)
+        </td>
+    </tr>
+}
+
+</table>
