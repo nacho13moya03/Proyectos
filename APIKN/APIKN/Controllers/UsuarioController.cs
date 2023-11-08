@@ -99,5 +99,17 @@ namespace APIKN.Controllers
         }
 
 
+        [HttpPut]
+        [Route("ActualizarEstadoUsuario")]
+        public string ActualizarEstadoUsuario(UsuarioEnt entidad)
+        {
+            using (var context = new BDKNEntities())
+            {
+                context.ActualizarEstadoUsuarioSP(entidad.ConUsuario);
+                return "OK";
+            }
+        }
+
+
     }
 }

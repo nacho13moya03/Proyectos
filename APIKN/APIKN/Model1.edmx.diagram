@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="BDKNModel.TUsuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="BDKNModel.FK_TUsuario_TProvincia" ManuallyRouted="false" />
         <AssociationConnector Association="BDKNModel.FK_TUsuario_TRol" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BDKNModel.TProducto" Width="1.5" PointX="5.625" PointY="1.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

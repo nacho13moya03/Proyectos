@@ -15,15 +15,37 @@ namespace WebKN.Controllers
         [HttpGet]
         public ActionResult ConsultaUsuarios()
         {
-            var datos = modelUsuario.ConsultaUsuarios();
+            long conUsuario = long.Parse(Session["ConUsuario"].ToString());
+            var datos = modelUsuario.ConsultaUsuarios().Where(x => x.ConUsuario != conUsuario);
             return View(datos);
         }
 
         [HttpGet]
+        public ActionResult ActualizarEstadoUsuario(long q)
+        {
+            var entidad = new UsuarioEnt();
+            entidad.ConUsuario = q;
+
+            string respuesta = modelUsuario.ActualizarEstadoUsuario(entidad);
+
+            if (respuesta == "OK")
+            {
+                return RedirectToAction("ConsultaUsuarios", "Usuario");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha podido cambiar el estado del usuario";
+                return View();
+            }            
+        }
+
+
+        [HttpGet]
         public ActionResult PerfilUsuario()
         {
-            var datos = modelUsuario.ConsultaUsuario();
-            Session["NombreUsuario"] = datos.Nombre;
+            long q = long.Parse(Session["ConUsuario"].ToString());
+            var datos = modelUsuario.ConsultaUsuario(q);
+            Session["Nombre"] = datos.Nombre;
             ViewBag.Direcciones = modelUsuario.ConsultarProvincias();
             return View(datos);
         }
@@ -35,7 +57,7 @@ namespace WebKN.Controllers
 
             if (respuesta == "OK")
             {
-                return RedirectToAction("PerfilUsuario", "Usuario");
+                return RedirectToAction("Index", "Login");
             }
             else
             {
@@ -44,6 +66,32 @@ namespace WebKN.Controllers
                 return View();
             }
         }
+
+        [HttpGet]
+        public ActionResult ActualizarUsuario(long q)
+        {
+            var datos = modelUsuario.ConsultaUsuario(q);
+            ViewBag.Direcciones = modelUsuario.ConsultarProvincias();
+            return View(datos);
+        }
+
+        [HttpPost]
+        public ActionResult ActualizarUsuario(UsuarioEnt entidad)
+        {
+            string respuesta = modelUsuario.ActualizarCuenta(entidad);
+
+            if (respuesta == "OK")
+            {
+                return RedirectToAction("ConsultaUsuarios", "Usuario");
+            }
+            else
+            {
+                ViewBag.MensajeUsuario = "No se ha podido actualizar su información";
+                ViewBag.Direcciones = modelUsuario.ConsultarProvincias();
+                return View();
+            }
+        }
+        
 
     }
 }

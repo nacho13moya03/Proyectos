@@ -30,6 +30,7 @@ namespace APIKN
         public virtual DbSet<TProvincia> TProvincia { get; set; }
         public virtual DbSet<TRol> TRol { get; set; }
         public virtual DbSet<TUsuario> TUsuario { get; set; }
+        public virtual DbSet<TProducto> TProducto { get; set; }
     
         public virtual ObjectResult<IniciarSesionSP_Result> IniciarSesionSP(string correo, string contrasenna)
         {
@@ -97,6 +98,15 @@ namespace APIKN
                 new ObjectParameter("ConUsuario", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ActualizarCuentaSP", identificacionParameter, nombreParameter, correoParameter, conProvinciaParameter, conUsuarioParameter);
+        }
+    
+        public virtual int ActualizarEstadoUsuarioSP(Nullable<long> conUsuario)
+        {
+            var conUsuarioParameter = conUsuario.HasValue ?
+                new ObjectParameter("ConUsuario", conUsuario) :
+                new ObjectParameter("ConUsuario", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ActualizarEstadoUsuarioSP", conUsuarioParameter);
         }
     }
 }
