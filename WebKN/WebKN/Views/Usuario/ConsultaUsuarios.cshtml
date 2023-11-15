@@ -10,7 +10,7 @@
         <div class="card-body">
             <h4 class="card-title">Información de Usuarios</h4>
 
-            <table class="table table-bordered table-hover">
+            <table id="tableShow" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Identificación</th>
@@ -54,3 +54,14 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tableShow').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            }
+        });
+    });
+</script>

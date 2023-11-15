@@ -1743,9 +1743,11 @@
     <Content Include="Views\Usuario\ConsultaUsuarios.cshtml" />
     <Content Include="Views\Usuario\ActualizarUsuario.cshtml" />
     <Content Include="Views\Producto\ConsultaProductos.cshtml" />
+    <Content Include="Views\Producto\RegistrarProducto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
